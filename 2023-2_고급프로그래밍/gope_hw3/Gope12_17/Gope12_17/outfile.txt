@@ -1,0 +1,4 @@
+20201599 ¿Ã∞«æ∆
+The sum of the first 3
+numbers in infile.txt
+is12

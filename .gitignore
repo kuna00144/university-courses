@@ -1,0 +1,13 @@
+.DS_Store
+.vs/
+Debug/
+Release/
+x64/
+*.pdb
+*.ilk
+*.exe
+*.obj
+*.ipch
+*.o
+*.so
+*.vcxproj.user
