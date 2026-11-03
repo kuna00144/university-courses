@@ -1,0 +1,39 @@
+    AREA RESET, CODE, READONLY
+    ENTRY                       ; Mark entry point
+    LDR   SP, =STACK_TOP        ; Set stack pointer
+
+    BL    main                  ; Branch to main function
+    B     .                     ; Infinite loop
+
+main
+    MOV   R0, #0                ; 파일 인덱스 혹은 식별자 초기화
+    BL    openFile              ; 파일 열기 함수 호출
+    CMP   R0, #0                ; 결과 확인
+    BEQ   fileError             ; 에러 처리
+
+    MOV   R4, R0                ; 파일 핸들을 R4에 저장
+
+readLoop
+    LDR   R0, R4                ; 파일 핸들을 R0에 로드
+    MOV   R1, #BUFFER_SIZE      ; 버퍼 크기 설정
+    BL    readFile              ; 파일 읽기 함수 호출
+    CMP   R0, #0                ; 읽은 데이터 길이 확인
+    BEQ   closeFile             ; 파일 닫기
+
+    MOV   R1, R0                ; 읽은 데이터 길이를 R1에 저장
+    BL    printHex              ; 16진수 출력 함수 호출
+    B     readLoop              ; 반복
+
+fileError
+    B     .                     ; 에러 발생 시 무한 루프
+
+closeFile
+    MOV   R0, R4                ; 파일 핸들을 R0에 로드
+    BL    closeFile             ; 파일 닫기 함수 호출
+    B     .                     ; 종료 후 무한 루프
+
+    AREA    DATA, DATA, READWRITE ; Data area
+BUFFER_SIZE  EQU    128            ; 버퍼 크기 정의
+buffer       SPACE  BUFFER_SIZE    ; 데이터 버퍼 할당
+
+    END                             ; End of file
